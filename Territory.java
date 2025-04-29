@@ -17,8 +17,8 @@ public class Territory {
     boolean useSocialDynamics = true; // allows to cancel the evolution of the behavioural intention (i.e. the alpha) when it is false
     double einit; // edible part of the initial food waste production = 0.032
     //double objGaspi; // anti-waste objective if applicable to the entire territory
-    double theta1; // Ptri[y] Sigmoid: Social dynamics modelled by the sigmoid that consists of implementing an incentive for sorting from Î±sf_initial = 70% to Î±sf_max = 95%
-    double theta2; // Ptri[y] Sigmoid: Social dynamics modelled by the sigmoid that consists of implementing an incentive for sorting from Î±sf_initial = 70% to Î±sf_max = 95%
+    double theta1; // Ptri[y] Sigmoid: Social dynamics modelled by the sigmoid that consists of implementing an incentive for sorting from ÃŽÂ±sf_initial = 70% to ÃŽÂ±sf_max = 95%
+    double theta2; // Ptri[y] Sigmoid: Social dynamics modelled by the sigmoid that consists of implementing an incentive for sorting from ÃŽÂ±sf_initial = 70% to ÃŽÂ±sf_max = 95%
 
     double mpf; // inflexion point of the food waste reduction sigmoid curve
 
@@ -50,7 +50,7 @@ public class Territory {
     int territoryName;
     int nbSubterritories;
     int nbEquipments;
-    CollectionTerritories[] myTerrit;
+    CollectionTerritory[] myTerrit;
     LargeScaleInfrastructure myCommonEquip;
 
     double increasedObjectiveOfMethanisedFoodWaste;
@@ -59,10 +59,10 @@ public class Territory {
 
         refYear = 0; //
         printTrajectory = printTraj;
-        myTerrit = new CollectionTerritories[nbSubterritories];
+        myTerrit = new CollectionTerritory[nbSubterritories];
         int sizeData = nbYears + 1;
         for (int i = 0; i < nbSubterritories; i++) {
-            myTerrit[i] = new CollectionTerritories(this, i);
+            myTerrit[i] = new CollectionTerritory(this, i);
             myTerrit[i].init(sizeData, paramsSubTerritories[i], refYear);
         }
         // initialisation of territory (after sub-territories as required to indicate which contribute to common valorisation equipment)
@@ -107,9 +107,9 @@ public class Territory {
         //objGaspi = params[3]; // waste reduction objective
         sigmoideABP = new double[sizeData];
         Arrays.fill(sigmoideABP, 0.0);
-        int KMethaniseur = (int) params[5]; // priority 1 if surplus capacity Î±m_max
+        int KMethaniseur = (int) params[5]; // priority 1 if surplus capacity ÃŽÂ±m_max
         int KIncinerator = (int) params[6]; // priority 2 if surplus 
-        int KnbCompostPro = (int) params[7]; // priority 3 if surplus capacity Î±cc_max
+        int KnbCompostPro = (int) params[7]; // priority 3 if surplus capacity ÃŽÂ±cc_max
         nbSubterritories = (int) params[4];
 
         myCommonEquip.init(sizeData, KMethaniseur, KIncinerator, KnbCompostPro);
@@ -155,7 +155,8 @@ public class Territory {
 
     public void computeTotalFluxSubTerritories(int y) {
         for (int i = 0; i < nbSubterritories; i++) {
-            Pall[y] = Pall[y] + myTerrit[i].P[y];
+            //Pall[y] = Pall[y] + myTerrit[i].P[y];
+            Pall[y] = Pall[y] + myTerrit[i].sizePop;
             //System.err.println("i: "+i+" y: "+y+" pop "+Pall[y]+" "+myTerrit[i].P[y]) ;
             Ball[y] = Ball[y] + myTerrit[i].B[y];
             Bfall[y] = Bfall[y] + myTerrit[i].Bpf[y];
